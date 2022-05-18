@@ -1,6 +1,7 @@
 import socket
 import os
 from _thread import *
+import interface
 
 serverSocket = socket.socket()
 host = '127.0.0.1'
@@ -11,8 +12,8 @@ try:
 except socket.error as e:
     print(str(e))
 print('Socket is listening..')
-
 serverSocket.listen(5)
+
 
 def multi_threaded_client(connection):
     connection.send(str.encode('Server is working:'))
@@ -27,8 +28,11 @@ def multi_threaded_client(connection):
         else:
             print(data)
 
+
 while True:
     Client, address = serverSocket.accept()
     print('Connected to: ' + address[0] + ':' + str(address[1]))
-    start_new_thread(multi_threaded_client, (Client, ))
+    interface.deviceList.addDevice()
+    start_new_thread(multi_threaded_client, (Client,))
+
 serverSocket.close()
