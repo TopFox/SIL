@@ -1,14 +1,18 @@
 import pyaudio
-import wave
+
 from array import array
 from  math import log10
+import audioop
+
+
+
 
 FORMAT = pyaudio.paInt16
 CHUNK = 1024
-CHANNELS = 2
+CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output.wav"
+#RECORD_SECONDS = 5
+
 
 p = pyaudio.PyAudio()
 
@@ -18,29 +22,24 @@ stream = p.open(format=FORMAT,
                 input=True,
                 frames_per_buffer=CHUNK)
 
-p2 = pyaudio.PyAudio()
-stream_lecture = p2.open(format=FORMAT,
-                         channels=CHANNELS,
-                         rate=RATE,
-                         output=True)
 
-frames = []
 
-for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+
+
+#for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+while True:
     data = stream.read(CHUNK)
     data_chunk = array('h', stream.read(CHUNK))
-    max_out = 20* log10(max(data_chunk))
+    rms = audioop.rms(data,2)
+    max_out = 10* log10(rms)
     print(max_out)
-    #stream_lecture.write(data)
 
-stream.stop_stream()
-stream.close()
-p.terminate()
 
-stream_lecture.stop_stream()
-stream_lecture.close()
 
-p2.terminate()
+
+
+
+
 
 
 
