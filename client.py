@@ -14,7 +14,7 @@ class clientThread(Thread):
 
     def run(self):
         while not self.stopped.wait(1):
-            message = 'Client ' + str(self.client_id)
+            message = str(self.client_id) + ":" + str(50)
             self.connection.send(str.encode(message))
         self.connection.send(str.encode('stop'))
 
@@ -43,4 +43,3 @@ while True:
         stopFlag.set()
         print('Client stopped')
         exit()
-
