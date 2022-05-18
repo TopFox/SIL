@@ -40,10 +40,6 @@ pygame.init()
 screen = pygame.display.set_mode((800, 800))
 clock = pygame.time.Clock()
 
-pygame.init()
-screen = pygame.display.set_mode((800, 800))
-clock = pygame.time.Clock()
-
 
 def startGame():
     while True:
@@ -60,6 +56,6 @@ def startGame():
 
 
 deviceList = DevicesList()
-startGame()
+
 # micro1 = pygame.sprite.GroupSingle(Micro(120, 20, "1"))
 # startGame([micro1])

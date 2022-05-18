@@ -1,7 +1,7 @@
 import socket
 import os
 from _thread import *
-import interface
+from interface import deviceList
 
 serverSocket = socket.socket()
 host = '127.0.0.1'
@@ -34,5 +34,6 @@ while True:
     print('Connected to: ' + address[0] + ':' + str(address[1]))
     interface.deviceList.addDevice()
     start_new_thread(multi_threaded_client, (Client,))
+
 
 serverSocket.close()
