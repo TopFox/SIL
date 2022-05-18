@@ -2,7 +2,7 @@ import socket
 from _thread import *
 from threading import Thread, Event
 
-class MyThread(Thread):
+class clientThread(Thread):
     def __init__(self, event, connection):
         Thread.__init__(self)
         self.stopped = event
@@ -19,20 +19,20 @@ class MyThread(Thread):
         self.connection.send(str.encode('stop'))
 
 
-ClientMultiSocket = socket.socket()
+clientConnection = socket.socket()
 host = '127.0.0.1'
 port = 2004
 
-print('Waiting for connection response')
 try:
-    ClientMultiSocket.connect((host, port))
+    clientConnection.connect((host, port))
+    print('Successfully connected to the server')
 except socket.error as e:
     print(str(e))
-res = ClientMultiSocket.recv(1024)
-stopFlag = Event()
-thread = MyThread(stopFlag, ClientMultiSocket)
 
-print('Please enter your client_id:')
+stopFlag = Event()
+thread = clientThread(stopFlag, clientConnection)
+
+print('Please enter your id:')
 client_id = input()
 thread.set_id(client_id)
 while True:

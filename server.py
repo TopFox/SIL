@@ -2,17 +2,17 @@ import socket
 import os
 from _thread import *
 
-ServerSideSocket = socket.socket()
+serverSocket = socket.socket()
 host = '127.0.0.1'
 port = 2004
 
 try:
-    ServerSideSocket.bind((host, port))
+    serverSocket.bind((host, port))
 except socket.error as e:
     print(str(e))
 print('Socket is listening..')
 
-ServerSideSocket.listen(5)
+serverSocket.listen(5)
 
 def multi_threaded_client(connection):
     connection.send(str.encode('Server is working:'))
@@ -27,9 +27,8 @@ def multi_threaded_client(connection):
         else:
             print(data)
 
-
 while True:
-    Client, address = ServerSideSocket.accept()
+    Client, address = serverSocket.accept()
     print('Connected to: ' + address[0] + ':' + str(address[1]))
     start_new_thread(multi_threaded_client, (Client, ))
-ServerSideSocket.close()
+serverSocket.close()
