@@ -1,9 +1,6 @@
 import pyaudio
-
-from array import array
-from  math import log10
 import audioop
-
+import math
 
 
 
@@ -29,9 +26,9 @@ stream = p.open(format=FORMAT,
 #for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
 while True:
     data = stream.read(CHUNK)
-    data_chunk = array('h', stream.read(CHUNK))
+
     rms = audioop.rms(data,2)
-    max_out = 10* log10(rms)
+    max_out = 10 * math.log10(rms+0.1)
     print(max_out)
 
 

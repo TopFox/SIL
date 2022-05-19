@@ -1,6 +1,9 @@
 import socket
 from _thread import *
 from threading import Thread, Event
+import pyaudio
+import audioop
+import math
 
 class clientThread(Thread):
     def __init__(self, event, connection):
@@ -13,10 +16,33 @@ class clientThread(Thread):
         self.client_id = client_id
 
     def run(self):
+        FORMAT = pyaudio.paInt16
+        CHUNK = 1024
+        CHANNELS = 1
+        RATE = 44100
+
+        p = pyaudio.PyAudio()
+
+        stream = p.open(format=FORMAT,
+                        channels=CHANNELS,
+                        rate=RATE,
+                        input=True,
+                        frames_per_buffer=CHUNK)
         while not self.stopped.wait(1):
-            message = str(self.client_id) + ":" + str(45)
+
+            data = stream.read(CHUNK)
+
+            rms = audioop.rms(data, 2)
+            max_out = 10 * math.log10(rms + 1)
+
+
+
+            message = str(self.client_id) + ":" + str(max_out)
             self.connection.send(str.encode(message))
         self.connection.send(str.encode('stop'))
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
 
 
 clientConnection = socket.socket()
