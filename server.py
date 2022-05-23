@@ -37,7 +37,7 @@ def multi_threaded_client(connection):
 
 
 pygame.init()
-screen = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((800, 400))
 clock = pygame.time.Clock()
 
 

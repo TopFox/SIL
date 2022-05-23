@@ -32,9 +32,10 @@ class Micro(pygame.sprite.Sprite):
         self.health_change_speed = 5
 
     def updateInfo(self, data):
+        print("data -> ", data)
         if self.name == "U":
             self.name = data.split(":")[0]
-        self.target_noise = int(data.split(":")[1])
+        self.target_noise = int(float(data.split(":")[1]))
         if self.target_noise < 20:
             self.bar_color = (0,255,0)
         elif self.target_noise < 50:
