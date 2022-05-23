@@ -1,7 +1,6 @@
 import pygame
 import sys
 
-
 class DevicesList:
     def __init__(self):
         self.devices = []
@@ -13,8 +12,6 @@ class DevicesList:
         c = self.currCoordY
         self.currCoordY = self.currCoordY + self.coordYi
         return c
-        #self.devices.append(pygame.sprite.GroupSingle(Micro(self.currCoordX, self.currCoordY)))
-        #self.currCoordY = self.currCoordY + self.coordYi
 
 
 class Micro(pygame.sprite.Sprite):
@@ -35,11 +32,11 @@ class Micro(pygame.sprite.Sprite):
         print("data -> ", data)
         if self.name == "U":
             self.name = data.split(":")[0]
-        self.target_noise = int(float(data.split(":")[1]))
+        self.target_noise = min(int(float(data.split(":")[1])), self.max_noise)
         if self.target_noise < 20:
             self.bar_color = (0,255,0)
         elif self.target_noise < 50:
-            self.bar_color = (255,255,0)
+            self.bar_color = (220,220,0)
         else:
             self.bar_color = (255,0,0)
 
@@ -47,16 +44,18 @@ class Micro(pygame.sprite.Sprite):
         self.basic_health(screen)
 
     def basic_health(self, screen):
-        #pygame.draw.rect(screen, (0,0,0), (self.coordX-5, self.coordY-5, self.noise_bar_length+10, 45))
         pygame.draw.rect(screen, self.bar_color, (self.coordX, self.coordY, self.target_noise / self.noise_ratio, 35))
         pygame.draw.rect(screen, (255, 255, 255), (self.coordX, self.coordY, self.noise_bar_length, 35), 4)
+        font = pygame.font.Font('freesansbold.ttf', 40)
+        text = font.render(self.name, True, self.bar_color, (0,0,0))
+        textRect = text.get_rect()
+        textRect.center = (self.coordX - 40, self.coordY + 20)
+        screen.blit(text, textRect)
 
 def updateScreen(screen, clock, deviceList):
-    print("here")
     screen.fill((0, 0, 0))
     for dev in deviceList.devices:
         dev.update(screen)
-        print("salut", dev.max_noise)
     pygame.display.update()
     clock.tick(60)
 """
