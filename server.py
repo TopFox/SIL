@@ -5,8 +5,8 @@ import interface
 import pygame
 
 serverSocket = socket.socket()
-host = '127.0.0.1'
-port = 2004
+host = '192.168.55.160'
+port = 5050
 
 try:
     serverSocket.bind((host, port))

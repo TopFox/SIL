@@ -30,7 +30,7 @@ class clientThread(Thread):
                         frames_per_buffer=CHUNK)
         while not self.stopped.wait(1):
 
-            data = stream.read(CHUNK)
+            data = stream.read(CHUNK, exception_on_overflow = False)
 
             rms = audioop.rms(data, 2)
             max_out = 10 * math.log10(rms + 1)
@@ -46,8 +46,8 @@ class clientThread(Thread):
 
 
 clientConnection = socket.socket()
-host = '127.0.0.1'
-port = 2004
+host = '192.168.55.160'
+port = 5050
 
 try:
     clientConnection.connect((host, port))
